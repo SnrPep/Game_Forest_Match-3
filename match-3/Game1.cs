@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Match3Game.Screens;
+using Match3Game.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -6,16 +8,14 @@ namespace match_3
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
         public Game1()
         {
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 700;
         }
 
         protected override void Initialize()
@@ -25,13 +25,19 @@ namespace match_3
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            ScreenManager.Init(GraphicsDevice, Content);
+            ScreenManager.ChangeScreen(new MainMenuScreen());
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            ScreenManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -39,6 +45,8 @@ namespace match_3
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Gray);
+
+            ScreenManager.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }
