@@ -8,14 +8,16 @@ namespace match_3
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
         }
 
         protected override void Initialize()
@@ -25,10 +27,10 @@ namespace match_3
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ScreenManager.Init(GraphicsDevice, Content);
-            ScreenManager.ChangeScreen(new MainMenuScreen());
+            ScreenManager.ChangeScreen(new MainMenuScreen(this));
         }
 
         protected override void Update(GameTime gameTime)
@@ -46,7 +48,7 @@ namespace match_3
         {
             GraphicsDevice.Clear(Color.Gray);
 
-            ScreenManager.Draw(spriteBatch);
+            ScreenManager.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }

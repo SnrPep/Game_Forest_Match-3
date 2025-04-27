@@ -1,21 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 using Match3Game.Utils;
 using match_3;
 using System;
 
 namespace Match3Game.Screens
 {
-    public class MainMenuScreen : IScreen
+    public class GameOverScreen : IScreen
     {
         private SpriteFont font;
-        private Button playButton;
-        private Texture2D playButtonTexture;
+        private Texture2D buttonTexture;
         private Game1 game;
+        private Button okButton;
 
-        public MainMenuScreen(Game1 game)
+        public GameOverScreen(Game1 game)
         {
             this.game = game;
         }
@@ -23,40 +23,38 @@ namespace Match3Game.Screens
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
             font = content.Load<SpriteFont>("Fonts/DefaultFont");
-            playButtonTexture = content.Load<Texture2D>("sprites/button");
+            buttonTexture = content.Load<Texture2D>("sprites/button");
 
-            playButton = new Button(game, playButtonTexture, new Point(300, 300), new Point(playButtonTexture.Width, playButtonTexture.Height))
+            okButton = new Button(game, buttonTexture, new Point(300, 300), new Point(buttonTexture.Width, buttonTexture.Height))
             {
                 Font = font,
-                Text = "Play",
+                Text = "Ok",
                 NormalColor = Color.White,
                 HighlightedColor = Color.LightGray,
                 ClickedColor = Color.Gray,
                 TextColor = Color.Black
             };
 
-            playButton.Clicked += PlayButton_Clicked;
+            okButton.Clicked += OkButton_Clicked;
         }
 
-
-        private void PlayButton_Clicked(object sender, EventArgs e)
+        private void OkButton_Clicked(object sender, EventArgs e)
         {
-            ScreenManager.ChangeScreen(new GameScreen(game));
+            ScreenManager.ChangeScreen(new MainMenuScreen(game));
         }
-
 
         public void Update(GameTime gameTime)
         {
-            playButton.HandleInput();
+            okButton.HandleInput();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, "Match-3", new Vector2(300, 150), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, "Game Over", new Vector2(300, 150), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
 
-            playButton.Draw(spriteBatch);
+            okButton.Draw(spriteBatch);
 
             spriteBatch.End();
         }
