@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
@@ -14,7 +15,7 @@ namespace Match3Game.Grid
 
         private Rectangle rect;
         private ButtonState oldClickState = Mouse.GetState().LeftButton;
-        private int cellSize = 64;
+        public static int cellSize { get; } = 64;
 
         public Cell(int gridX, int gridY, Vector2 worldPos)
         {
@@ -23,7 +24,12 @@ namespace Match3Game.Grid
             rect = new Rectangle((int)worldPos.X, (int)worldPos.Y, cellSize, cellSize);
         }
 
-        public void HandleInput()
+        public void Update(GameTime gameTime)
+        {
+            HandleInput();
+        }
+
+        private void HandleInput()
         {
             MouseState mouseState = Mouse.GetState();
             Point mousePos = new Point(mouseState.X, mouseState.Y);
@@ -37,6 +43,11 @@ namespace Match3Game.Grid
             }
 
             oldClickState = mouseState.LeftButton;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            Element?.Draw(spriteBatch, WorldPosition, cellSize);
         }
     }
 }

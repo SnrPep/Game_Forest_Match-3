@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Match3Game
 {
-    public class Clickable : DrawableGameComponent
+    public class Clickable
     {
         protected Rectangle Rectangle { get; set; }
 
@@ -19,14 +19,13 @@ namespace Match3Game
 
         private ButtonState oldClickState = Mouse.GetState().LeftButton;
 
-        protected new Game1 Game => (Game1)base.Game;
 
-        protected Clickable(Game game, Rectangle targetRectangle) : base(game)
+        protected Clickable(Rectangle targetRectangle)
         {
             Rectangle = targetRectangle;
         }
 
-        protected Clickable(Game game) : base(game)
+        protected Clickable()
         {
         }
 

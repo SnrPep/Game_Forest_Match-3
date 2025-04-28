@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Match3Game.Utils;
-using match_3;
 using System;
 
 namespace Match3Game.Screens
@@ -13,11 +12,9 @@ namespace Match3Game.Screens
         private SpriteFont font;
         private Button playButton;
         private Texture2D playButtonTexture;
-        private Game1 game;
 
-        public MainMenuScreen(Game1 game)
+        public MainMenuScreen()
         {
-            this.game = game;
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -25,7 +22,7 @@ namespace Match3Game.Screens
             font = content.Load<SpriteFont>("Fonts/DefaultFont");
             playButtonTexture = content.Load<Texture2D>("sprites/button");
 
-            playButton = new Button(game, playButtonTexture, new Point(300, 300), new Point(playButtonTexture.Width, playButtonTexture.Height))
+            playButton = new Button(playButtonTexture, new Point(300, 300), new Point(playButtonTexture.Width, playButtonTexture.Height))
             {
                 Font = font,
                 Text = "Play",
@@ -41,7 +38,7 @@ namespace Match3Game.Screens
 
         private void PlayButton_Clicked(object sender, EventArgs e)
         {
-            ScreenManager.ChangeScreen(new GameScreen(game));
+            ScreenManager.ChangeScreen(new GameScreen());
         }
 
 

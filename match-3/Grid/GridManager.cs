@@ -8,7 +8,6 @@ namespace Match3Game.Grid
     public class GridManager
     {
         private int gridSize = 8;
-        private int cellSize = 64;
         private Cell[,] cells;
         private List<Texture2D> elementTextures;
         private Random random = new Random();
@@ -29,7 +28,7 @@ namespace Match3Game.Grid
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    Vector2 position = new Vector2(x * cellSize + 100, y * cellSize + 50);
+                    Vector2 position = new Vector2(x * Cell.cellSize + 100, y * Cell.cellSize + 50);
                     cells[x, y] = new Cell(x, y, position);
 
                     cells[x, y].Element = GenerateNonMatchingElement(x, y);
@@ -77,7 +76,7 @@ namespace Match3Game.Grid
                                 cells[x, y].Element = cells[x, aboveY].Element;
                                 cells[x, aboveY].Element = null;
 
-                                cells[x, y].Element.Offset = new Vector2(0, (aboveY - y) * cellSize);
+                                cells[x, y].Element.Offset = new Vector2(0, (aboveY - y) * Cell.cellSize);
                                 break;
                             }
                         }
@@ -91,60 +90,59 @@ namespace Match3Game.Grid
                 {
                     if (cells[x, y].Element == null)
                     {
-                        cells[x, y].Element = GenerateRandomElement();
+                        cells[x, y].Element = GenerateRandomElement(new List<int>());
 
-                        cells[x, y].Element.Offset = new Vector2(0, -cellSize * (gridSize - y));
+                        cells[x, y].Element.Offset = new Vector2(0, -Cell.cellSize * (gridSize - y));
                     }
                 }
             }
         }
 
-
-        private Element GenerateRandomElement()
+        private Element GenerateRandomElement(List<int> forbiddenTypes)
         {
-            int type = random.Next(0, elementTextures.Count);
-            return new Element(type, elementTextures[type]);
+            List<int> allowedTypes = new List<int>();
+
+            for (int i = 0; i < elementTextures.Count; i++)
+            {
+                if (!forbiddenTypes.Contains(i))
+                {
+                    allowedTypes.Add(i);
+                }
+            }
+
+            int selectedType = allowedTypes[random.Next(allowedTypes.Count)];
+            return new Element(selectedType, elementTextures[selectedType]);
         }
+
 
         private Element GenerateNonMatchingElement(int x, int y)
         {
-            Element newElement;
-            bool hasMatch;
+            List<int> forbiddenTypes = new List<int>();
 
-            do
+            if (x >= 2)
             {
-                newElement = GenerateRandomElement();
-                hasMatch = false;
+                var e1 = cells[x - 1, y].Element;
+                var e2 = cells[x - 2, y].Element;
 
-                if (x >= 2)
+                if (e1 != null && e2 != null && e1.Type == e2.Type)
                 {
-                    var e1 = cells[x - 1, y].Element;
-                    var e2 = cells[x - 2, y].Element;
-
-                    if (e1 != null && e2 != null &&
-                        e1.Type == newElement.Type && e2.Type == newElement.Type)
-                    {
-                        hasMatch = true;
-                    }
+                    forbiddenTypes.Add(e1.Type);
                 }
+            }
 
-                if (y >= 2)
+            if (y >= 2)
+            {
+                var e1 = cells[x, y - 1].Element;
+                var e2 = cells[x, y - 2].Element;
+
+                if (e1 != null && e2 != null && e1.Type == e2.Type)
                 {
-                    var e1 = cells[x, y - 1].Element;
-                    var e2 = cells[x, y - 2].Element;
-
-                    if (e1 != null && e2 != null &&
-                        e1.Type == newElement.Type && e2.Type == newElement.Type)
-                    {
-                        hasMatch = true;
-                    }
+                    forbiddenTypes.Add(e1.Type);
                 }
+            }
 
-            } while (hasMatch);
-
-            return newElement;
+            return GenerateRandomElement(forbiddenTypes);
         }
-
 
         private void OnCellClicked(object sender, Cell clickedCell)
         {
@@ -178,7 +176,6 @@ namespace Match3Game.Grid
                 }
             }
         }
-
 
         private bool AreNeighbors(Cell a, Cell b)
         {
@@ -262,15 +259,13 @@ namespace Match3Game.Grid
             return anyMatched;
         }
 
-
-
         public void Update(GameTime gameTime)
         {
             for (int y = 0; y < gridSize; y++)
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    cells[x, y].HandleInput();
+                    cells[x, y].Update(gameTime);
                 }
             }
 
@@ -283,7 +278,7 @@ namespace Match3Game.Grid
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    cells[x, y].Element?.Draw(spriteBatch, cells[x, y].WorldPosition, cellSize);
+                    cells[x, y].Draw(spriteBatch);
                 }
             }
         }

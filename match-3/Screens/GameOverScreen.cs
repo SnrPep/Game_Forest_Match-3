@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using Match3Game.Utils;
-using match_3;
 using System;
+using Match3Game.Grid;
 
 namespace Match3Game.Screens
 {
@@ -12,12 +12,12 @@ namespace Match3Game.Screens
     {
         private SpriteFont font;
         private Texture2D buttonTexture;
-        private Game1 game;
         private Button okButton;
+        private int score;
 
-        public GameOverScreen(Game1 game)
+        public GameOverScreen(int score)
         {
-            this.game = game;
+            this.score = score;
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -25,7 +25,7 @@ namespace Match3Game.Screens
             font = content.Load<SpriteFont>("Fonts/DefaultFont");
             buttonTexture = content.Load<Texture2D>("sprites/button");
 
-            okButton = new Button(game, buttonTexture, new Point(300, 300), new Point(buttonTexture.Width, buttonTexture.Height))
+            okButton = new Button(buttonTexture, new Point(300, 300), new Point(buttonTexture.Width, buttonTexture.Height))
             {
                 Font = font,
                 Text = "Ok",
@@ -40,7 +40,7 @@ namespace Match3Game.Screens
 
         private void OkButton_Clicked(object sender, EventArgs e)
         {
-            ScreenManager.ChangeScreen(new MainMenuScreen(game));
+            ScreenManager.ChangeScreen(new MainMenuScreen());
         }
 
         public void Update(GameTime gameTime)
@@ -52,7 +52,8 @@ namespace Match3Game.Screens
         {
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(font, "Game Over", new Vector2(300, 150), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, "Game Over", new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, $"Final score: {score}", new Vector2(300, 200), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
 
             okButton.Draw(spriteBatch);
 

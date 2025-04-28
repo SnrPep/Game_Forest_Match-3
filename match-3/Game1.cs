@@ -10,7 +10,7 @@ namespace match_3
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -30,7 +30,7 @@ namespace match_3
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ScreenManager.Init(GraphicsDevice, Content);
-            ScreenManager.ChangeScreen(new MainMenuScreen(this));
+            ScreenManager.ChangeScreen(new MainMenuScreen());
         }
 
         protected override void Update(GameTime gameTime)

@@ -17,8 +17,8 @@ namespace Match3Game
 
         public event EventHandler Clicked;
 
-        public Button(Game game, Texture2D texture, Point position, Point size)
-            : base(game, new Rectangle(position, size))
+        public Button(Texture2D texture, Point position, Point size)
+            : base(new Rectangle(position, size))
         {
             this.texture = texture;
         }

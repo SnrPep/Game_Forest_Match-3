@@ -6,26 +6,23 @@ using Match3Game.Utils;
 using Match3Game.Grid;
 using System;
 using System.Collections.Generic;
-using match_3;
 
 namespace Match3Game.Screens
 {
     public class GameScreen : IScreen
     {
-        private double timeLeft = 60.0;
+        private double timeLeft = 10.0;
         private SpriteFont font;
         private GridManager gridManager;
         private List<Texture2D> elementTextures;
-        private Game1 game;
 
         private int[,] grid;
         private Random random;
 
-        public GameScreen(Game1 game)
+        public GameScreen()
         {
             grid = new int[8, 8];
             random = new Random();
-            this.game = game;
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -55,7 +52,7 @@ namespace Match3Game.Screens
             if (timeLeft <= 0)
             {
                 timeLeft = 0;
-                ScreenManager.ChangeScreen(new GameOverScreen(game));
+                ScreenManager.ChangeScreen(new GameOverScreen(gridManager.Score));
             }
         }
 
