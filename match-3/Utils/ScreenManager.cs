@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Match3Game.Utils
 {
@@ -11,16 +12,41 @@ namespace Match3Game.Utils
         private static GraphicsDevice graphicsDevice;
         private static ContentManager contentManager;
 
+        private static Dictionary<string, IScreen> screens = new Dictionary<string, IScreen>();
+
         public static void Init(GraphicsDevice gd, ContentManager content)
         {
             graphicsDevice = gd;
             contentManager = content;
+
+            Register("MainMenu", new MainMenuScreen());
+            Register("Game", new GameScreen());
+            Register("GameOver", new GameOverScreen());
+
+            Show("MainMenu");
         }
 
-        public static void ChangeScreen(IScreen newScreen)
+        private static void Register(string name, IScreen screen)
         {
-            currentScreen = newScreen;
-            currentScreen.LoadContent(graphicsDevice, contentManager);
+            screens[name] = screen;
+            screen.LoadContent(graphicsDevice, contentManager);
+        }
+
+        public static void Show(string name)
+        {
+            if (screens.ContainsKey(name))
+            {
+                currentScreen = screens[name];
+            }
+        }
+
+        public static void Reset(string name, IScreen newInstance)
+        {
+            if (screens.ContainsKey(name))
+                screens.Remove(name);
+
+            Register(name, newInstance);
+            Show(name);
         }
 
         public static void Update(GameTime gameTime)

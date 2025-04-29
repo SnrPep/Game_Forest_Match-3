@@ -11,7 +11,7 @@ namespace Match3Game.Screens
 {
     public class GameScreen : IScreen
     {
-        private double timeLeft = 10.0;
+        private double timeLeft = 60.0;
         private SpriteFont font;
         private GridManager gridManager;
         private List<Texture2D> elementTextures;
@@ -52,7 +52,7 @@ namespace Match3Game.Screens
             if (timeLeft <= 0)
             {
                 timeLeft = 0;
-                ScreenManager.ChangeScreen(new GameOverScreen(gridManager.Score));
+                ScreenManager.Show("GameOver");
             }
         }
 
@@ -63,7 +63,7 @@ namespace Match3Game.Screens
             gridManager.Draw(spriteBatch);
 
             spriteBatch.DrawString(font, $"Time Left: {Math.Ceiling(timeLeft)}", new Vector2(100, 10), Color.Black);
-            spriteBatch.DrawString(font, $"Score: {gridManager.Score}", new Vector2(400, 10), Color.Black);
+            spriteBatch.DrawString(font, $"Score: {PlayerInfo.Score}", new Vector2(400, 10), Color.Black);
 
             spriteBatch.End();
         }

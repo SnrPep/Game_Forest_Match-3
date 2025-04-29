@@ -13,11 +13,9 @@ namespace Match3Game.Screens
         private SpriteFont font;
         private Texture2D buttonTexture;
         private Button okButton;
-        private int score;
 
-        public GameOverScreen(int score)
+        public GameOverScreen()
         {
-            this.score = score;
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -40,7 +38,7 @@ namespace Match3Game.Screens
 
         private void OkButton_Clicked(object sender, EventArgs e)
         {
-            ScreenManager.ChangeScreen(new MainMenuScreen());
+            ScreenManager.Show("MainMenu");
         }
 
         public void Update(GameTime gameTime)
@@ -53,7 +51,7 @@ namespace Match3Game.Screens
             spriteBatch.Begin();
 
             spriteBatch.DrawString(font, "Game Over", new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
-            spriteBatch.DrawString(font, $"Final score: {score}", new Vector2(300, 200), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, $"Final score: {PlayerInfo.Score}", new Vector2(300, 200), Color.Black, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
 
             okButton.Draw(spriteBatch);
 

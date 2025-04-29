@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Match3Game.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ namespace Match3Game.Grid
         private List<Texture2D> elementTextures;
         private Random random = new Random();
         private Cell selectedCell = null;
-        private int score = 0;
-        public int Score => score;
 
         public GridManager(List<Texture2D> textures)
         {
@@ -244,7 +243,7 @@ namespace Match3Game.Grid
                     if (matched[x, y])
                     {
                         cells[x, y].Element = null;
-                        score += 10;
+                        PlayerInfo.Score += 10;
                         anyMatched = true;
                     }
                 }

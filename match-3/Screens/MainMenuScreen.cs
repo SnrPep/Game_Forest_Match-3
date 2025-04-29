@@ -38,9 +38,9 @@ namespace Match3Game.Screens
 
         private void PlayButton_Clicked(object sender, EventArgs e)
         {
-            ScreenManager.ChangeScreen(new GameScreen());
+            PlayerInfo.Score = 0;
+            ScreenManager.Reset("Game", new GameScreen());
         }
-
 
         public void Update(GameTime gameTime)
         {

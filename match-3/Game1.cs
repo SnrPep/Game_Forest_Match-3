@@ -30,7 +30,6 @@ namespace match_3
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ScreenManager.Init(GraphicsDevice, Content);
-            ScreenManager.ChangeScreen(new MainMenuScreen());
         }
 
         protected override void Update(GameTime gameTime)
