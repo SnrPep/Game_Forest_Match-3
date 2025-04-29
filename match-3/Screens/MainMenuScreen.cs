@@ -38,7 +38,7 @@ namespace Match3Game.Screens
 
         private void PlayButton_Clicked(object sender, EventArgs e)
         {
-            PlayerInfo.Score = 0;
+            PlayerInfo.Reset();
             ScreenManager.Reset("Game", new GameScreen());
         }
 
